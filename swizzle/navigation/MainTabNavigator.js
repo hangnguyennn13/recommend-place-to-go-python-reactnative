@@ -1,11 +1,15 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import SearchScreen from '../screens/SearchScreen';
+import MapScreen1 from '../screens/MapScreen1';
+import MapScreen2 from '../screens/MapScreen2';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -37,6 +41,8 @@ HomeStack.path = '';
 
 const LinksStack = createStackNavigator(
   {
+    Map1: MapScreen1,
+    Map2: MapScreen2,
     Links: LinksScreen,
   },
   config
@@ -67,10 +73,27 @@ SettingsStack.navigationOptions = {
 
 SettingsStack.path = '';
 
+const SearchStack = createStackNavigator(
+  {
+    Search: SearchScreen,
+  },
+  config
+);
+
+SearchStack.navigationOptions = {
+  tabBarLabel: 'Settings',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
+  ),
+};
+
+SearchStack.path = '';
+
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
   LinksStack,
   SettingsStack,
+  SearchStack,
 });
 
 tabNavigator.path = '';
